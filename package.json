@@ -1,0 +1,5 @@
+{
+  "name": "dependency-policy",
+  "private": true,
+  "description": "Packages that the automatic dependency updates of the zairakai group must not update yet."
+}

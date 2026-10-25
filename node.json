@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "package": "typescript",
+      "reason": "TypeScript 7 is not accepted by the peer range of typescript-eslint (>=4.8.4 <6.1.0), which the lint of every package depends on.",
+      "since": "2026-10-11",
+      "unblock": { "version": "7.0.0", "peers": ["typescript-eslint"] }
+    },
+    {
+      "package": "@prettier/plugin-php",
+      "reason": "0.26 is not accepted by the peer range of prettier-plugin-blade (^0.24.0 || ^0.25.0): Prettier then cannot find the plugin.",
+      "since": "2026-10-24",
+      "unblock": { "version": "0.26.0", "peers": ["prettier-plugin-blade"] }
+    }
+  ]
+}
