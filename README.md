@@ -41,6 +41,11 @@ A scheduled job of this repository checks the `unblock` condition of every entry
 opens a merge request that removes the entry, merges it when its pipeline succeeds and sends a notification. The update
 tools take the package at their next run. Entries without `unblock`, and `php.json`, are removed by hand.
 
+## Branches
+
+`main` is the only long-lived branch: the tools read it live. Work on a `feature/#ticket-name` branch from `main`, merge
+request into `main` (the pipeline checks the shape of the files).
+
 ## Rules
 
 - A project can still list a package of its own in `reject` of its `.dependency-update.json`.

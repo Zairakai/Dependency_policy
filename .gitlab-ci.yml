@@ -1,0 +1,42 @@
+# The policy is read live from main by the update tools of the group, so main is the only long-lived branch here.
+# The jobs use the update tool of @zairakai/js-dev-tools: it checks the shape of the files and lifts the entries whose
+# condition is met (merge request into main, merged when its pipeline succeeds).
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+stages:
+  - validate
+  - watch
+
+variables:
+  NODE_IMAGE: "zairakai/node:1.3.1-dev"
+  GIT_DEPTH: 1
+
+.tool: &tool
+  image: ${NODE_IMAGE}
+  before_script:
+    - npm install --no-save --no-audit --no-fund "@zairakai/js-dev-tools@latest"
+
+# Every change of the policy is checked before it is read by the tools.
+policy:validate:
+  <<: *tool
+  stage: validate
+  script:
+    - node node_modules/@zairakai/js-dev-tools/scripts/update-dependencies.mjs policy-validate
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+
+# A daily schedule lifts the entries of node.json whose condition is met. The group variable GITLAB_TOKEN (protected, so
+# this runs on main) opens and merges the merge request, NTFY_URL is the alert.
+policy:watch:
+  <<: *tool
+  stage: watch
+  script:
+    - node node_modules/@zairakai/js-dev-tools/scripts/update-dependencies.mjs policy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
