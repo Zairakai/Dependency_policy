@@ -1,6 +1,7 @@
 # The policy is read live from main by the update tools of the group, so main is the only long-lived branch here.
-# The jobs use the update tool of @zairakai/js-dev-tools: it checks the shape of the files and lifts the entries whose
-# condition is met (merge request into main, merged when its pipeline succeeds).
+# Each ecosystem has its own update tool: @zairakai/js-dev-tools for node.json and zairakai/laravel-dev-tools for php.json.
+# They lift the entries whose condition is met (merge request into main, merged when its pipeline succeeds), and the
+# first one checks the shape of both files.
 
 workflow:
   rules:
@@ -11,9 +12,12 @@ workflow:
 stages:
   - validate
   - watch
+  - watch-php
 
 variables:
   NODE_IMAGE: "zairakai/node:1.3.1-dev"
+  # The jobs of the automatic updates sign with gpg: the dev image has it since 2.3.0.
+  PHP_IMAGE: "zairakai/php:2.3.0-dev"
   GIT_DEPTH: 1
 
 .tool: &tool
@@ -33,10 +37,21 @@ policy:validate:
 
 # A daily schedule lifts the entries of node.json whose condition is met. The group variable GITLAB_TOKEN (protected, so
 # this runs on main) opens and merges the merge request, NTFY_URL is the alert.
-policy:watch:
+policy:watch:node:
   <<: *tool
   stage: watch
   script:
     - node node_modules/@zairakai/js-dev-tools/scripts/update-dependencies.mjs policy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# The same for php.json, after the job above (a merge request that lifts an entry stops the next one).
+policy:watch:php:
+  image: ${PHP_IMAGE}
+  stage: watch-php
+  before_script:
+    - composer create-project --no-interaction --no-progress zairakai/laravel-dev-tools /tmp/laravel-dev-tools
+  script:
+    - php /tmp/laravel-dev-tools/bin/update-dependencies policy
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
