@@ -1,3 +1,9 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "package": "policy-sync/test-package",
+      "reason": "Temporary entry to test the workflow Policy sync of the base tools on GitHub. Nobody uses this package. It is removed right after the test.",
+      "since": "2026-10-26"
+    }
+  ]
 }

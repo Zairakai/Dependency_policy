@@ -11,6 +11,11 @@
       "reason": "0.26 is not accepted by the peer range of prettier-plugin-blade (^0.24.0 || ^0.25.0): Prettier then cannot find the plugin.",
       "since": "2026-10-24",
       "unblock": { "version": "0.26.0", "peers": ["prettier-plugin-blade"] }
+    },
+    {
+      "package": "policy-sync-test-package",
+      "reason": "Temporary entry to test the workflow Policy sync of the base tools on GitHub. Nobody uses this package. It is removed right after the test.",
+      "since": "2026-10-26"
     }
   ]
 }
