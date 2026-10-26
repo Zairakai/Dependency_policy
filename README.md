@@ -33,13 +33,14 @@ Another file (bash, docker...) can be added for another tool.
 - `reason`: one sentence, the real cause.
 - `since`: the day the entry was added.
 - `unblock` (optional): the condition that lifts the block. The block is lifted when the latest release of every package
-  of `peers` accepts `version` in its peer range. Without `unblock`, the entry is lifted by hand.
+  of `peers` accepts `version` in its peer range (`peerDependencies` on npm, `require` of the latest stable release on
+  Packagist). Without `unblock`, the entry is lifted by hand.
 
 ## Lifting a block
 
-A scheduled job of this repository checks the `unblock` condition of every entry of `node.json`. When it is met, the job
-opens a merge request that removes the entry, merges it when its pipeline succeeds and sends a notification. The update
-tools take the package at their next run. Entries without `unblock`, and `php.json`, are removed by hand.
+A scheduled job of this repository checks the `unblock` condition of every entry of `node.json` and `php.json`. When it
+is met, the job opens a merge request that removes the entry, merges it when its pipeline succeeds and sends a
+notification. The update tools take the package at their next run. Entries without `unblock` are removed by hand.
 
 ## Branches
 
