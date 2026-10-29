@@ -1,3 +1,9 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "package": "driftingly/rector-laravel",
+      "reason": "2.7.3 with phpstan 2.3.4 makes Rector crash on every file; 2.7.2 works.",
+      "since": "2026-10-29"
+    }
+  ]
 }
