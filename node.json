@@ -11,12 +11,6 @@
       "reason": "0.26 is not accepted by the peer range of prettier-plugin-blade (^0.24.0 || ^0.25.0): Prettier then cannot find the plugin.",
       "since": "2026-10-24",
       "unblock": { "version": "0.26.0", "peers": ["prettier-plugin-blade"] }
-    },
-    {
-      "package": "stylelint",
-      "reason": "Stylelint 18 is not accepted by the peer range of stylelint-config-standard-scss (^17.0.0) and of stylelint-scss (^16.8.2 || ^17.0.0), which the SCSS lint of every package depends on.",
-      "since": "2026-11-10",
-      "unblock": { "version": "18.0.0", "peers": ["stylelint-config-standard-scss", "stylelint-scss"] }
     }
   ]
 }
